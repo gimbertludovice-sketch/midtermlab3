@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVENTPRO LAB (MIDTERM LAB 3) - Interactive Technical Demonstration</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vsDark: '#1e1e1e',
+                        vsHeader: '#2d2d2d',
+                        vsSidebar: '#252526',
+                        vsAccent: '#007acc',
+                        winFormBg: '#ffffe0',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .font-mono-code {
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+        }
+        /* Custom Scrollbar for IDE feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #424242;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4f4f4f;
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans antialiased min-h-screen flex flex-col justify-between">
+    <!-- Header Navigation Bar -->
+    <header class="bg-vsHeader border-b border-gray-800 px-6 py-3 flex justify-between items-center shadow-lg">
+        <div class="flex items-center space-x-3">
+            <div class="h-3 w-3 bg-red-500 rounded-full"></div>
+            <div class="h-3 w-3 bg-yellow-500 rounded-full"></div>
+            <div class="h-3 w-3 bg-green-500 rounded-full"></div>
+            <span class="ml-2 font-semibold text-sm tracking-wide text-gray-300">EVENTPRO LAB (MIDTERM LAB 3) &mdash; Professional Defense & Demo Suite</span>
+        </div>
+        <div class="text-xs text-gray-400 font-mono-code">
+            Presenter: <span class="text-vsAccent font-bold">Gimbert Ludovice</span> | Section: WITMWD3M1 | Student ID: 25-15077
+        </div>
+    </header>
+    <!-- Main Content Grid -->
+    <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-4">
+        <!-- Left Column: Step Navigation & Architecture Overview (4 cols) -->
+        <section class="lg:col-span-4 flex flex-col space-y-4">
+            <!-- Controls Panel -->
+            <div class="bg-vsDark border border-gray-800 rounded-lg p-5 shadow-xl">
+                <h2 class="text-lg font-bold text-vsAccent mb-3 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Demonstration Execution Pipeline
+                </h2>
+                <p class="text-xs text-gray-400 mb-4">Click "Start Full Auto-Demo" to run the automated voice walkthrough, or manually step through each technical phase below.</p>
+                
+                <div class="flex space-x-2 mb-4">
+                    <button id="btnAutoRun" onclick="startAutoDemo()" class="flex-1 bg-vsAccent hover:bg-blue-600 text-white text-xs font-bold py-2 px-3 rounded shadow transition">
+                        ▶ Start Full Auto-Demo
+                    </button>
+                    <button id="btnStop" onclick="stopDemo()" class="bg-red-700 hover:bg-red-800 text-white text-xs font-bold py-2 px-3 rounded shadow transition">
+                        ■ Stop Voice
+                    </button>
+                </div>
+                <div class="space-y-2" id="stepList">
+                    <!-- Step Items injected dynamically -->
+                </div>
+            </div>
+            <!-- Technical Architecture Card -->
+            <div class="bg-vsDark border border-gray-800 rounded-lg p-5 shadow-xl flex-1 flex flex-col">
+                <h3 class="text-sm font-bold text-gray-200 uppercase tracking-wider mb-3">Enterprise Architectural Specs</h3>
+                <div class="text-xs space-y-2 text-gray-300 font-mono-code flex-1">
+                    <div class="p-2 bg-vsSidebar rounded border border-gray-800">
+                        <span class="text-vsAccent">Presenter:</span> Gimbert Ludovice (19) — Section WITMWD3M1
+                    </div>
+                    <div class="p-2 bg-vsSidebar rounded border border-gray-800">
+                        <span class="text-vsAccent">Professor:</span> Dr. Louie Precilla
+                    </div>
+                    <div class="p-2 bg-vsSidebar rounded border border-gray-800">
+                        <span class="text-vsAccent">GUI Layer:</span> .NET Windows Forms Framework (WinForms)
+                    </div>
+                    <div class="p-2 bg-vsSidebar rounded border border-gray-800">
+                        <span class="text-vsAccent">Data Access Layer:</span> ADO.NET DataProvider (SqlConnection, SqlCommand, SqlDataAdapter)
+                    </div>
+                    <div class="p-2 bg-vsSidebar rounded border border-gray-800">
+                        <span class="text-vsAccent">Database Engine:</span> Microsoft SQL Server Express LocalDB (`(localdb)\MSSQLLocalDB`)
+                    </div>
+                    <div class="p-2 bg-vsSidebar rounded border border-gray-800">
+                        <span class="text-vsAccent">Export Pipeline:</span> Stream IO / CSV File Generation (`System.IO.StreamWriter`)
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Right Column: Interactive IDE/App Simulation Display (8 cols) -->
+        <section class="lg:col-span-8 flex flex-col space-y-4">
+            
+            <!-- Main Display Area (IDE & Form View) -->
+            <div class="bg-vsDark border border-gray-800 rounded-lg overflow-hidden shadow-2xl flex-1 flex flex-col min-h-[480px]">
+                
+                <!-- Tab Header -->
+                <div class="bg-vsHeader px-4 py-2 flex items-center justify-between border-b border-gray-800">
+                    <div class="flex items-center space-x-2">
+                        <span id="tabTitle" class="text-xs font-mono-code text-blue-400 font-semibold">Welcome — EVENTPRO LAB Midterm Lab 3</span>
+                    </div>
+                    <span id="statusBadge" class="bg-emerald-900 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Status: Ready</span>
+                </div>
+                <!-- Interactive IDE Visualizer -->
+                <div id="visualViewport" class="flex-1 p-4 bg-vsDark relative overflow-auto flex items-center justify-center">
+                    <!-- Dynamic Content Rendered Here -->
+                </div>
+                <!-- Live Subtitles & Script Captions Footer -->
+                <div class="bg-black/80 border-t border-gray-800 p-4 min-h-[80px] flex items-center justify-center">
+                    <div class="text-center">
+                        <span class="text-xs font-bold text-vsAccent uppercase tracking-widest block mb-1">Live Voice Caption</span>
+                        <p id="liveCaption" class="text-sm md:text-base text-yellow-300 font-medium italic transition-all duration-300">
+                            "Click 'Start Full Auto-Demo' or select any step to initiate the presentation."
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Debug & Output Console Logs -->
+            <div class="bg-vsDark border border-gray-800 rounded-lg p-3 h-32 flex flex-col font-mono-code text-xs">
+                <div class="flex justify-between items-center text-gray-400 border-b border-gray-800 pb-1 mb-1">
+                    <span>Visual Studio Output & Stack Trace</span>
+                    <span class="text-[10px] text-gray-500">Thread: [17708] EVENTPRO LAB</span>
+                </div>
+                <div id="debugConsole" class="flex-1 overflow-y-auto text-gray-400 space-y-1">
+                    <div class="text-gray-500">[System Initialization] Environment ready. Presenter: Gimbert Ludovice — Section WITMWD3M1.</div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Page Footer -->
+    <footer class="bg-vsHeader border-t border-gray-800 px-6 py-2 text-center text-xs text-gray-500">
+        EVENTPRO LAB (MIDTERM LAB 3) &copy; 2026 — Presented by Gimbert Ludovice (WITMWD3M1) for Prof. Dr. Louie Precilla | Trimex Colleges
+    </footer>
+    <!-- JavaScript Logic -->
+    <script>
+        // Demonstration Steps Data Engine
+        const demoSteps = [
+            {
+                id: 1,
+                title: "1. Introduction & Project Overview",
+                tab: "Welcome — EVENTPRO LAB Midterm Lab 3",
+                voiceText: "Good day and a pleasant morning to our beloved Professor, Doc. Louie Precilla, and to my fellow classmates. I am Gimbert Ludovice, 19 years old, from Section WITMWD3M1. Today, I proudly present EVENTPRO LAB — my complete Student Information System built using C-Sharp Windows Forms and Microsoft SQL Server. This project demonstrates database design, full CRUD operations, and verified CSV data export. Let’s begin with our database schema.",
+                caption: "Good day, Professor Doc. Louie Precilla and classmates. I am Gimbert Ludovice, 19, Section WITMWD3M1 — presenting EVENTPRO LAB.",
+                viewType: "sql",
+                consoleMsg: "Introduction complete. Loading database schema definition..."
+            },
+            {
+                id: 2,
+                title: "2. T-SQL Schema & DDL Execution",
+                tab: "SQLQuery1.sql - T-SQL DDL Engine",
+                voiceText: "Here we define our Students table with proper data types, primary key, and constraints. This ensures data integrity and proper structure for all student records.",
+                caption: "Defining Students table schema with primary keys and strict data constraints.",
+                viewType: "sql",
+                consoleMsg: "Executing T-SQL query on (localdb)\\MSSQLLocalDB -> StudentDB... Success."
+            },
+            {
+                id: 3,
+                title: "3. Form Architecture & Data Binding",
+                tab: "Form1.cs [Design] - ADO.NET Interface",
+                voiceText: "Moving into Visual Studio environment. The front-end user interface is structured with optimized inputs: Student ID, Full Name, Age, Course specialization, Email, GPA, Date of Birth picker, and Enrollment status. All controls bind directly to our Data Access Layer.",
+                caption: "Visual Studio WinForms environment initialized with ADO.NET data bindings.",
+                viewType: "design",
+                consoleMsg: "Form1 loaded into designer thread [7764]. Controls bound to DataGridView."
+            },
+            {
+                id: 4,
+                title: "4. Execution & CRUD Operations",
+                tab: "Running Instance - Student Information System",
+                voiceText: "When we execute the program, the system connects via ADO.NET SQL Connection and loads all student records into the DataGridView. Users can perform Insert, Update, Delete, Search, and Clear operations.",
+                caption: "Application running — connected to MSSQLLocalDB, records loaded successfully.",
+                viewType: "form_running",
+                consoleMsg: "The thread 11540 has exited with code 0. DataGrid bound successfully — 6 records loaded."
+            },
+            {
+                id: 5,
+                title: "5. Record Selection & Data Mapping",
+                tab: "Active Data Row - Selected Entity: 25-15077",
+                voiceText: "Selecting a row automatically fills all input fields. Here we see my record — Student ID 25-15077, Gimbert Ludovice, BS Information Technology specializing in Mobile and Web Development.",
+                caption: "Row selected: 25-15077 — Gimbert Ludovice. Data mapped to all input fields.",
+                viewType: "form_selected",
+                consoleMsg: "Selected row index [0]: Student ID 25-15077 mapped to input controls."
+            },
+            {
+                id: 6,
+                title: "6. Stream I/O & CSV Export",
+                tab: "Save File Dialog - System.IO StreamWriter",
+                voiceText: "Clicking Export to CSV opens a Save File Dialog. The system uses StreamWriter to convert all database records into a properly formatted CSV file — StudentsExport.csv.",
+                caption: "Initiating Stream I/O — saving dataset as StudentsExport.csv.",
+                viewType: "form_save",
+                consoleMsg: "SaveFileDialog invoked. Writing 6 records to StudentsExport.csv..."
+            },
+            {
+                id: 7,
+                title: "7. Verification & Conclusion",
+                tab: "StudentsExport.csv — Final Verification",
+                voiceText: "Finally, opening the file confirms all 6 records — including my own — are accurately exported with correct headers and formatting. This concludes my demonstration. Thank you, Professor Doc. Louie Precilla, and thank you everyone!",
+                caption: "Verification complete — 6 records validated. Thank you for watching!",
+                viewType: "csv_view",
+                consoleMsg: "Process completed with exit code 0. All records verified. Demonstration finished."
+            }
+        ];
+        let currentStepIndex = 0;
+        let isAutoRunning = false;
+        let synth = window.speechSynthesis;
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            renderStepList();
+            loadStep(0);
+        });
+        // Render Step Buttons
+        function renderStepList() {
+            const container = document.getElementById('stepList');
+            container.innerHTML = demoSteps.map((step, idx) => `
+                <button id="step-btn-${idx}" onclick="selectStep(${idx})" 
+                    class="w-full text-left p-2.5 rounded border border-gray-800 bg-vsSidebar hover:bg-gray-800 transition flex items-center justify-between text-xs">
+                    <span class="font-semibold text-gray-300">${step.title}</span>
+                    <span class="text-[10px] text-gray-500 font-mono">STEP 0${idx+1}</span>
+                </button>
+            `).join('');
+        }
+        // Highlight Active Step
+        function updateActiveButton(index) {
+            demoSteps.forEach((_, idx) => {
+                const btn = document.getElementById(`step-btn-${idx}`);
+                if (idx === index) {
+                    btn.className = "w-full text-left p-2.5 rounded border border-vsAccent bg-vsAccent/20 text-white font-semibold transition flex items-center justify-between text-xs shadow-md";
+                } else {
+                    btn.className = "w-full text-left p-2.5 rounded border border-gray-800 bg-vsSidebar hover:bg-gray-800 transition flex items-center justify-between text-xs text-gray-400";
+                }
+            });
+        }
+        // Load and Display Step View
+        function loadStep(index) {
+            currentStepIndex = index;
+            const step = demoSteps[index];
+            // Update UI Labels
+            document.getElementById('tabTitle').innerText = step.tab;
+            document.getElementById('liveCaption').innerText = `"${step.caption}"`;
+            updateActiveButton(index);
+            // Log Console
+            logConsole(step.consoleMsg);
+            // Render Visual Mockup based on step viewType
+            const viewport = document.getElementById('visualViewport');
+            viewport.innerHTML = renderMockupView(step.viewType);
+        }
+        // Add line to console
+        function logConsole(msg) {
+            const consoleBox = document.getElementById('debugConsole');
+            const time = new Date().toLocaleTimeString();
+            const logItem = document.createElement('div');
+            logItem.className = "text-emerald-400";
+            logItem.innerText = `[${time}] ${msg}`;
+            consoleBox.appendChild(logItem);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+        // Voice Narration Trigger
+        function speakCurrentStep(index, onComplete) {
+            if ('speechSynthesis' in window) {
+                synth.cancel();
+                const step = demoSteps[index];
+                const utterance = new SpeechSynthesisUtterance(step.voiceText);
+                utterance.rate = 0.93;
+                utterance.pitch = 1.0;
+                utterance.lang = 'en-US';
+                utterance.onend = () => {
+                    if (onComplete && isAutoRunning) onComplete();
+                };
+                utterance.onerror = () => {
+                    if (onComplete && isAutoRunning) onComplete();
+                };
+                synth.speak(utterance);
+            } else {
+                if (onComplete && isAutoRunning) setTimeout(onComplete, 4500);
+            }
+        }
+        // Manual Selection
+        function selectStep(index) {
+            isAutoRunning = false;
+            synth.cancel();
+            loadStep(index);
+            speakCurrentStep(index, null);
+        }
+        // Start Full Automated Walkthrough
+        function startAutoDemo() {
+            isAutoRunning = true;
+            runAutoSequence(0);
+        }
+        function runAutoSequence(index) {
+            if (!isAutoRunning || index >= demoSteps.length) {
+                isAutoRunning = false;
+                logConsole("✅ Demonstration completed successfully.");
+                return;
+            }
+            loadStep(index);
+            speakCurrentStep(index, () => {
+                if (isAutoRunning) setTimeout(() => runAutoSequence(index + 1), 1000);
+            });
+        }
+        // Stop Audio
+        function stopDemo() {
+            isAutoRunning = false;
+            synth.cancel();
+            logConsole("Voice narration stopped.");
+        }
+        // Visual Mockup Renderer Engine
+        function renderMockupView(type) {
+            if (type === 'sql') {
+                return `
+                <div class="w-full h-full bg-vsDark p-4 font-mono-code text-xs text-gray-200 overflow-auto border border-gray-800 rounded">
+                    <div class="text-gray-500 mb-2">// File: SQLQuery1.sql — Database: StudentDB</div>
+                    <div><span class="text-blue-400 font-bold">CREATE TABLE</span> <span class="text-yellow-300">Students</span> (</div>
+                    <div class="pl-6"><span class="text-sky-300">StudentID</span> <span class="text-blue-400">VARCHAR</span>(50) <span class="text-blue-400">PRIMARY KEY</span>,</div>
+                    <div class="pl-6"><span class="text-sky-300">FullName</span> <span class="text-blue-400">VARCHAR</span>(100) <span class="text-blue-400">NOT NULL</span>,</div>
+                    <div class="pl-6"><span class="text-sky-300">Age</span> <span class="text-blue-400">INT</span> <span class="text-blue-400">NOT NULL</span>,</div>
+                    <div class="pl-6"><span class="text-sky-300">Course</span> <span class="text-blue-400">VARCHAR</span>(150),</div>
+                    <div class="pl-6"><span class="text-sky-300">Email</span> <span class="text-blue-400">VARCHAR</span>(100),</div>
+                    <div class="pl-6"><span class="text-sky-300">GPA</span> <span class="text-blue-400">FLOAT</span>,</div>
+                    <div class="pl-6"><span class="text-sky-300">DateOfBirth</span> <span class="text-blue-400">DATE</span>,</div>
+                    <div class="pl-6"><span class="text-sky-300">IsEnrolled</span> <span class="text-blue-400">BIT</span> <span class="text-blue-400">NOT NULL DEFAULT</span> 1</div>
+                    <div>);</div>
+                    <div class="mt-4 p-2 bg-emerald-950/40 border border-emerald-700/60 text-emerald-300 text-[11px] rounded">
+                        Command(s) completed successfully.
+                    </div>
+                </div>`;
+            }
+            if (type === 'csv_view') {
+                return `
+                <div class="w-full h-full bg-white text-gray-900 font-sans text-xs p-3 rounded shadow overflow-auto">
+                    <div class="bg-green-700 text-white p-2 font-bold mb-2 flex justify-between items-center rounded-t">
+                        <span>WPS Office — StudentsExport.csv</span>
+                        <span class="text-[10px] bg-green-800 px-2 py-0.5 rounded">Spreadsheet Mode</span>
+                    </div>
+                    <table class="w-full border-collapse border border-gray-300 text-left text-[11px]">
+                        <thead>
+                            <tr class="bg-gray-100 font-bold border-b border-gray-300">
+                                <th class="border p-1">StudentID</th>
+                                <th class="border p-1">FullName</th>
+                                <th class="border p-1">Age</th>
+                                <th class="border p-1">Course</th>
+                                <th class="border p-1">Email</th>
+                                <th class="border p-1">GPA</th>
+                                <th class="border p-1">DateOfBirth</th>
+                                <th class="border p-1">IsEnrolled</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-yellow-100 font-bold">
+                                <td class="border p-1">25-15077</td>
+                                <td class="border p-1">Gimbert Ludovice</td>
+                                <td class="border p-1">19</td>
+                                <td class="border p-1">BS IT — Mobile and Web Development</td>
+                                <td class="border p-1">gimbertludovice@student.trimexcolleges.edu.ph</td>
+                                <td class="border p-1">1.00</td>
+                                <td class="border p-1">13/10/2006 00:00</td>
+                                <td class="border p-1 text-green-700">TRUE</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-1">25-15064</td>
+                                <td class="border p-1">Mark Edrian Altarez</td>
+                                <td class="border p-1">20</td>
+                                <td class="border p-1">BS IT — Mobile and Web Development</td>
+                                <td class="border p-1">markedrianaltarez@student.trimexcolleges.edu.ph</td>
+                                <td class="border p-1">1.25</td>
+                                <td class="border p-1">15/03/2004 00:00</td>
+                                <td class="border p-1 text-green-700">TRUE</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-1">25-15082</td>
+                                <td class="border p-1">Rj Cea</td>
+                                <td class="border p-1">20</td>
+                                <td class="border p-1">BS IT — Mobile and Web Development</td>
+                                <td class="border p-1">rjcea@student.trimexcolleges.edu.ph</td>
+                                <td class="border p-1">1.75</td>
+                                <td class="border p-1">28/05/2005 00:00</td>
+                                <td class="border p-1 text-green-700">TRUE</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-1">25-15075</td>
+                                <td class="border p-1">Rhayken Macato</td>
+                                <td class="border p-1">21</td>
+                                <td class="border p-1">BS IT — Network and Security</td>
+                                <td class="border p-1">rhaykenmacato@student.trimexcolleges.edu.ph</td>
+                                <td class="border p-1">1.75</td>
+                                <td class="border p-1">05/01/2005 00:00</td>
+                                <td class="border p-1 text-green-700">TRUE</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-1">25-15080</td>
+                                <td class="border p-1">Mhargarette Fernandez</td>
+                                <td class="border p-1">21</td>
+                                <td class="border p-1">BS IT — Mobile and Web Development</td>
+                                <td class="border p-1">mhargarettefernandez@student.trimexcolleges.edu.ph</td>
+                                <td class="border p-1">1.25</td>
+                                <td class="border p-1">10/11/2004 00:00</td>
+                                <td class="border p-1 text-green-700">TRUE</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-1">25-15155</td>
+                                <td class="border p-1">Mark Villegas</td>
+                                <td class="border p-1">23</td>
+                                <td class="border p-1">BS IT — Mobile and Web Development</td>
+                                <td class="border p-1">markvillegas@student.trimexcolleges.edu.ph</td>
+                                <td class="border p-1">1.51</td>
+                                <td class="border p-1">22/08/2002 00:00</td>
+                                <td class="border p-1 text-green-700">TRUE</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>`;
+            }
+            // Default: WinForms UI
+            const isSelected = type === 'form_selected' || type === 'form_save' || type === 'form_exported';
+            const isSaveModal = type === 'form_save';
+            const isExportedModal = type === 'form_exported';
+            return `
+            <div class="relative bg-winFormBg text-gray-900 w-[580px] p-4 rounded shadow-2xl border-2 border-gray-400 font-sans text-xs">
+                <div class="bg-gray-200 border-b border-gray-300 -m-4 mb-3 p-1.5 flex justify-between items-center font-bold text-gray-700">
+                    <span class="flex items-center space-x-1">
+                        <span class="w-3 h-3 bg-blue-500 inline-block rounded-sm"></span>
+                        <span>Student Information System (CRUD)</span>
+                    </span>
+                    <div class="text-xs font-mono">_ ▢ X</div>
+                </div>
+                <h2 class="text-center font-black text-sm tracking-widest text-gray-800 my-2">STUDENT FORM</h2>
+                <div class="grid grid-cols-2 gap-2 my-2 text-[11px]">
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Student ID:</label>
+                        <input type="text" value="${isSelected ? '25-15077' : ''}" class="w-full border border-gray-400 p-1 bg-white rounded shadow-inner" readonly />
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Email:</label>
+                        <input type="text" value="${isSelected ? 'gimbertludovice@student.trimexcolleges.edu.ph' : ''}" class="w-full border border-gray-400 p-1 bg-white rounded shadow-inner" readonly />
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Full Name:</label>
+                        <input type="text" value="${isSelected ? 'Gimbert Ludovice' : ''}" class="w-full border border-gray-400 p-1 bg-white rounded shadow-inner" readonly />
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">GPA:</label>
+                        <input type="text" value="${isSelected ? '1.00' : ''}" class="w-full border border-gray-400 p-1 bg-white rounded shadow-inner" readonly />
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Age:</label>
+                        <input type="text" value="${isSelected ? '19' : ''}" class="w-full border border-gray-400 p-1 bg-white rounded shadow-inner" readonly />
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Date of Birth:</label>
+                        <input type="text" value="${isSelected ? '13 October 2006' : ''}" class="w-full border border-gray-400 p-1 bg-white rounded shadow-inner" readonly />
+                    </div>
+                </div>
+                <div class="my-1">
+                    <label class="block text-gray-700 font-semibold text-[11px]">Course:</label>
+                    <input type="text" value="${isSelected ? 'BS IT — Mobile and Web Development' : ''}" class="w-full border border-gray-400 p-1 bg-white rounded shadow-inner text-[11px]" readonly />
+                </div>
+                <div class="my-2 flex items-center space-x-1">
+                    <input type="checkbox" ${isSelected ? 'checked' : ''} disabled />
+                    <label class="text-[11px] font-semibold text-gray-700">Is Enrolled</label>
+                </div>
+                <div class="grid grid-cols-6 gap-1 my-3">
+                    <button class="bg-gray-100 hover:bg-gray-200 border border-gray-400 py-1 font-semibold rounded text-[10px]">Insert</button>
+                    <button class="bg-gray-100 hover:bg-gray-200 border border-gray-400 py-1 font-semibold rounded text-[10px]">Update</button>
+                    <button class="bg-gray-100 hover:bg-gray-200 border border-gray-400 py-1 font-semibold rounded text-[10px]">Delete</button>
+                    <button class="bg-gray-100 hover:bg-gray-200 border border-gray-400 py-1 font-semibold rounded text-[10px]">Clear</button>
+                    <button class="bg-gray-100 hover:bg-gray-200 border border-gray-400 py-1 font-semibold rounded text-[10px]">Search</button>
+                    <button class="bg-gray-200 hover:bg-gray-300 border border-gray-500 py-1 font-bold text-vsAccent rounded text-[10px]">Export CSV</button>
+                </div>
+                <div class="border border-gray-400 bg-white h-32 overflow-auto text-[10px]">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-gray-100 border-b border-gray-300 font-bold sticky top-0">
+                            <tr>
+                                <th class="p-1 border-r">StudentID</th>
+                                <th class="p-1 border-r">FullName</th>
+                                <th class="p-1 border-r">Age</th>
+                                <th class="p-1">Course</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b ${isSelected ? 'bg-blue-600 text-white font-bold' : ''}">
+                                <td class="p-1 border-r">25-15077</td>
+                                <td class="p-1 border-r">Gimbert Ludovice</td>
+                                <td class="p-1 border-r">19</td>
+                                <td class="p-1">BS IT — Mobile & Web Dev</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-1 border-r">25-15064</td>
+                                <td class="p-1 border-r">Mark Edrian Altarez</td>
+                                <td class="p-1 border-r">20</td>
+                                <td class="p-1">BS IT — Mobile & Web Dev</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-1 border-r">25-15082</td>
+                                <td class="p-1 border-r">Rj Cea</td>
+                                <td class="p-1 border-r">20</td>
+                                <td class="p-1">BS IT — Mobile & Web Dev</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-1 border-r">25-15075</td>
+                                <td class="p-1 border-r">Rhayken Macato</td>
+                                <td class="p-1 border-r">21</td>
+                                <td class="p-1">BS IT — Network & Security</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-1 border-r">25-15080</td>
+                                <td class="p-1 border-r">Mhargarette Fernandez</td>
+                                <td class="p-1 border-r">21</td>
+                                <td class="p-1">BS IT — Mobile & Web Dev</td>
+                            </tr>
+                            <tr>
+                                <td class="p-1 border-r">25-15155</td>
+                                <td class="p-1 border-r">Mark Villegas</td>
+                                <td class="p-1 border-r">23</td>
+                                <td class="p-1">BS IT — Mobile & Web Dev</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                ${isSaveModal ? `
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center p-4">
+                    <div class="bg-black text-white p-4 rounded shadow-2xl border border-gray-600 w-80 text-xs">
+                        <div class="font-bold mb-2 text-vsAccent">Save As</div>
+                        <div class="bg-gray-900 p-2 rounded mb-2 border border-gray-700">
+                            <span class="text-gray-400 block text-[10px]">File name:</span>
+                            <span class="font-mono text-yellow-300">StudentsExport.csv</span>
+                        </div>
+                        <div class="flex justify-end space-x-2">
+                            <button class="bg-vsAccent px-3 py-1 rounded text-white font-bold text-[10px]">Save</button>
+                        </div>
+                    </div>
+                </div>` : ''}
+                ${isExportedModal ? `
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center p-4">
+                    <div class="bg-white text-gray-900 p-4 rounded shadow-2xl border border-gray-400 w-72 text-center text-xs">
+                        <div class="w-8 h-8 bg-blue-500 text-white font-bold rounded-full flex items-center justify-center mx-auto mb-2 text-sm">✓</div>
+                        <div class="font-bold text-sm mb-1">Export Complete</div>
+                        <p class="text-gray-600 text-[11px] mb-3">Data exported successfully to StudentsExport.csv!</p>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-1 rounded text-[11px]">OK</button>
+                    </div>
+                </div>` : ''}
+            </div>`;
+        }
+    </script>
+</body>
+</html>
